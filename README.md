@@ -89,7 +89,7 @@ Highlights the most common restaurant categories and compares average ratings ac
 Some of the main findings from the analysis include:
 
 * Philadelphia has a diverse restaurant landscape with a wide range of cuisine categories represented.
-* Restaurants average ratings showed an upward trend in relation to restuarants price tier.
+* Restaurants average ratings show an upward trend in relation to restuarants price tier.
 * Customer engagement varies significantly between restaurants, with review volume providing insight into restaurant popularity.
 * Certain cuisine categories demonstrate stronger customer satisfaction compared to others.
 
@@ -105,37 +105,7 @@ Some of the main findings from the analysis include:
 
 View the interactive dashboard here:
 
-[Insert Tableau Public Link]
-
----
-
-## Project Structure
-
-```
-Philadelphia-Restaurant-Success-Analysis/
-│
-├── README.md
-│
-├── SQL/
-│   └── restaurant_analysis.sql
-│
-├── Tableau/
-│   └── Philadelphia_Restaurant_Dashboard.twbx
-│
-└── Images/
-    └── dashboard.png
-```
-
----
-
-## Future Improvements
-
-Potential future additions to this project include:
-
-* Analyzing the relationship between review volume and restaurant success
-* Exploring neighborhood-level performance
-* Adding customer sentiment analysis from Yelp reviews
-* Incorporating additional time-based review trends
+(https://public.tableau.com/views/PhiladelphiaRestaurantSuccessAnalysis/Dashboard2?:language=en-US&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link)
 
 ---
 
