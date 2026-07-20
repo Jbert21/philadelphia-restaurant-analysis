@@ -1,1 +1,110 @@
+## SQL Analysis
 
+The dataset was cleaned and analyzed in **Google BigQuery** using SQL before being imported into Tableau. The queries below highlight some of the key techniques used throughout the project.
+
+---
+
+### 1. Price Category Analysis
+
+This query analyzes how restaurant pricing relates to customer ratings and engagement.
+
+```sql
+SELECT
+  CASE
+    WHEN RestaurantsPriceRange2 = '1' THEN '$'
+    WHEN RestaurantsPriceRange2 = '2' THEN '$$'
+    WHEN RestaurantsPriceRange2 = '3' THEN '$$$'
+    WHEN RestaurantsPriceRange2 = '4' THEN '$$$$'
+  END AS price_range,
+
+  COUNT(*) AS restaurants,
+  ROUND(AVG(stars),2) AS avg_rating,
+  ROUND(AVG(review_count),0) AS avg_reviews_per_restaurant,
+  SUM(review_count) AS total_reviews
+
+FROM `couresa-497016.philadelphia_restaurant_data.couresa-497016`
+
+WHERE RestaurantsPriceRange2 IS NOT NULL
+
+GROUP BY price_range
+ORDER BY price_range;
+```
+
+**Key Insight**
+
+- Higher-priced restaurants consistently received higher average ratings.
+- Premium restaurants also generated significantly more customer reviews.
+
+---
+
+### 2. Cleaning Restaurant Cuisine Categories
+
+The Yelp dataset contains hundreds of category combinations stored as text. A CASE statement was used to standardize these into meaningful cuisine groups for analysis.
+
+```sql
+CASE
+    WHEN categories LIKE '%Pizza%' THEN 'Pizza'
+    WHEN categories LIKE '%Italian%' THEN 'Italian'
+    WHEN categories LIKE '%Chinese%' THEN 'Chinese'
+    WHEN categories LIKE '%Breakfast & Brunch%' THEN 'Breakfast & Brunch'
+    WHEN categories LIKE '%American (New)%' THEN 'American (New)'
+    WHEN categories LIKE '%American (Traditional)%' THEN 'American (Traditional)'
+    WHEN categories LIKE '%Mexican%' THEN 'Mexican'
+    WHEN categories LIKE '%Japanese%' THEN 'Japanese'
+    WHEN categories LIKE '%Vietnamese%' THEN 'Vietnamese'
+    WHEN categories LIKE '%Mediterranean%' THEN 'Mediterranean'
+    ELSE 'Other'
+END AS cuisine
+```
+
+**Key Insight**
+
+- Reduced hundreds of inconsistent Yelp category combinations into a clean set of business-friendly cuisine categories.
+
+---
+
+### 3. Restaurant Category Exploration
+
+Restaurant categories were stored as comma-separated strings. Using `UNNEST()` and `SPLIT()`, each category was separated into individual records for analysis.
+
+```sql
+SELECT
+  TRIM(category) AS category,
+  COUNT(*) AS restaurants,
+  ROUND(AVG(stars),2) AS avg_rating,
+  ROUND(AVG(review_count),0) AS avg_reviews
+
+FROM `couresa-497016.philadelphia_restaurant_data.couresa-497016`,
+UNNEST(SPLIT(categories, ',')) AS category
+
+GROUP BY category
+ORDER BY restaurants DESC;
+```
+
+**Key Insight**
+
+- Identified the most common restaurant categories and their average customer ratings.
+
+---
+
+### 4. Data Completeness Assessment
+
+Before building the Tableau dashboard, important restaurant attributes were assessed for completeness.
+
+
+---
+
+### 4. Preparing the Tableau Dataset
+
+A final analysis table was created in BigQuery to simplify visualization in Tableau.
+
+The dataset included:
+
+- Cleaned cuisine categories
+- Standardized price levels (`$`–`$$$$`)
+- Customer ratings
+- Review counts
+- Geographic coordinates
+- Restaurant metadata
+
+This transformed the raw Yelp dataset into a single analysis-ready table optimized for dashboard development.
